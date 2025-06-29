@@ -1,30 +1,138 @@
- <section class="relative w-full h-screen overflow-hidden text-xs font-semibold bg-black text-white/30">
-  <a href="https://www.linkedin.com/in/anas-frontdev/" target="_blank" rel="noopener noreferrer" class="fixed top-10 left-1/2 -translate-1/2 w-fit z-50">
-    <img src="https://craft-eosin.vercel.app/logo.png" class="w-14 h-auto mix-blend-difference duration-250 hover:scale-105 hover:rotate-5" alt="logo - Anas" />
-  </a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Landing Page - Karan Yede</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <div class="absolute top-2/4 left-1/2 -translate-1/2 z-50 flex flex-col items-center gap-5">
-    <!-- Headline -->
-    <h1 class="text-4xl md:text-6xl font-bold text-zinc-100 text-center mb-8 w-14/10 max-w-150">Welcome to My Portfolio</h1>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <div class="relative w-60 bg-white text-black border border-black shadow-lg shadow-white/30 hover:shadow-white/50 py-5 px-4 rounded-4xl overflow-hidden scale-150 hover:scale-160 duration-200">
-      <A href="https://karanyede.vercel.app/">
-      <span id="scrambleText" class="select-none">*&@#$#@#$@*&$(@#^) </span> </a>
-      <button id="toggleBtn" type="button" class="absolute top-1/2 -translate-y-1/2 right-0 border border-zinc-600 h-full aspect-square bg-black hover:bg-black/85 duration-100 text-white rounded-full text-10px focus:outline-green-500 scale-95 cursor-pointer">Decrypt</button>
+  <!-- GSAP Core -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- GSAP Plugins (Club required) -->
+  <script src="https://assets.codepen.io/16327/SplitText3.min.js"></script>
+  <script src="https://assets.codepen.io/16327/ScrambleTextPlugin3.min.js"></script>
+
+  <style>
+    body { font-family: sans-serif; }
+  </style>
+</head>
+<body class="bg-black text-white text-xs font-semibold">
+
+  <section class="relative w-full h-screen overflow-hidden">
+    <a href="https://karanyede.vercel.app/" target="_blank" class="fixed top-10 left-1/2 -translate-x-1/2 z-50">
+      <img src="https://craft-eosin.vercel.app/logo.png" class="w-14 mix-blend-difference hover:scale-105 hover:rotate-3 transition" alt="logo" />
+    </a>
+
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-5">
+      <h1 class="text-4xl md:text-6xl font-bold text-zinc-100 text-center mb-8 max-w-xl">
+        Welcome to My Portfolio
+      </h1>
+
+      <div class="relative w-60 bg-white text-black border border-black py-5 px-4 rounded-3xl scale-110 hover:scale-125 transition">
+        <a href="https://karanyede.vercel.app/">
+          <span id="scrambleText" class="select-none">*&@#$#@#$@*&$(@#^) </span>
+        </a>
+        <button id="toggleBtn" type="button"
+          class="absolute top-1/2 right-0 -translate-y-1/2 text-white bg-black px-2 py-1 rounded-full text-xs">
+          Decrypt
+        </button>
+      </div>
     </div>
-    
-  </div>
 
-  <div class="quote opacity-0">Thanks for GSAPxWebflow</div>
-  <div class="quote opacity-0">Imagination is power</div>
-  <div class="quote opacity-0">Code is poetry</div>
-  <div class="quote opacity-0">Creativity takes courage</div>
-  <div class="quote opacity-0">Design is intelligence made visible</div>
-  <div class="quote opacity-0">Every pixel has a purpose</div>
-  <div class="quote opacity-0">Simplicity is the ultimate sophistication</div>
-  <div class="quote opacity-0">Imagination is power</div>
-  <div class="quote opacity-0">Code is poetry</div>
-  <div class="quote opacity-0">Creativity takes courage</div>
-  <div class="quote opacity-0">Design is intelligence made visible</div>
-  <div class="quote opacity-0">Every pixel has a purpose</div>
-</section>
+    <!-- Floating Quotes -->
+    <div class="quote absolute opacity-0">Imagination is power</div>
+    <div class="quote absolute opacity-0">Code is poetry</div>
+    <div class="quote absolute opacity-0">Creativity takes courage</div>
+    <div class="quote absolute opacity-0">Design is intelligence made visible</div>
+  </section>
+
+  <!-- Your Script -->
+  <script>
+    gsap.registerPlugin(SplitText, ScrambleTextPlugin);
+
+    const quotes = gsap.utils.toArray('.quote');
+    const target = document.getElementById('scrambleText');
+    const button = document.getElementById('toggleBtn');
+    const message = 'Creativity meets code.';
+    const scrambleChars = 'upperAndLowerCase';
+    let isDecoded = false;
+
+    // Scramble Quotes
+    const getRandomPosition = () => {
+      const x = Math.random() * (window.innerWidth - 200);
+      const y = Math.random() * (window.innerHeight - 100);
+      return { x, y };
+    };
+
+    const scrambleQuote = (quote, text) => {
+      const tl = gsap.timeline({ repeat: -1, repeatDelay: 1 });
+      tl.call(() => {
+        const { x, y } = getRandomPosition();
+        gsap.set(quote, { x, y });
+      })
+        .to(quote, {
+          delay: Math.random() * 5,
+          duration: 1,
+          opacity: 1,
+          scrambleText: { text, chars: scrambleChars, revealDelay: 0.5, speed: 1 },
+          ease: 'power2.out'
+        })
+        .to(quote, {
+          delay: 0.5,
+          duration: 1,
+          scrambleText: { text: '', chars: scrambleChars },
+          opacity: 0,
+          ease: 'power2.in'
+        });
+    };
+
+    quotes.forEach((quote) => {
+      gsap.set(quote, {
+        position: 'absolute',
+        opacity: 0,
+        whiteSpace: 'nowrap',
+      });
+      scrambleQuote(quote, quote.textContent || '');
+    });
+
+    gsap.set(target, {
+      scrambleText: {
+        text: '*&@#$#@#$@*&$(@#^)',
+        chars: scrambleChars,
+        speed: 0.3,
+      },
+    });
+
+    button?.addEventListener('click', () => {
+      const text = isDecoded ? '*&@#$#@#$@*&$(@#^)' : message;
+      const duration = isDecoded ? 1 : 1.5;
+      const speed = isDecoded ? 0.3 : 1;
+
+      gsap.to(target, {
+        duration,
+        scrambleText: {
+          text,
+          chars: scrambleChars,
+          revealDelay: isDecoded ? 0 : 0.5,
+          speed,
+        },
+      });
+
+      button.textContent = isDecoded ? 'Decrypt' : 'Encrypt';
+      isDecoded = !isDecoded;
+    });
+
+    const split = SplitText.create('h1', { type: 'words, lines' });
+    gsap.from(split.words, {
+      x: 'random([-1000, 1000])',
+      y: 'random([-1000, 1000])',
+      opacity: 0,
+      ease: 'expo.inOut',
+      duration: 1.25,
+    });
+  </script>
+</body>
+</html>
