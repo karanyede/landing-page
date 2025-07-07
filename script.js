@@ -2,7 +2,7 @@
 
 const target = document.getElementById("scrambleText");
 const button = document.getElementById("toggleBtn");
-const message = "Deciphered. Click Here!";
+const message = "Decrepted Successfully. Click Here to continue!";
 const scrambleChars =
   "!@#$%^&*abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 let isDecoded = false;
